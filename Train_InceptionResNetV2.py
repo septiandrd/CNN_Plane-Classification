@@ -48,7 +48,7 @@ if __name__ == '__main__':
     EPOCH = 100
 
     model = inception_resnet_v2.InceptionResNetV2(include_top=True, weights=None, classes=70,
-                     pooling='avg', input_shape=(300, 200, 3))
+                     pooling='avg', input_shape=(200, 300, 3))
 
     # model = load_model(os.getcwd()+'/saved_models/ResNet_checkpoint_050718_14-1.47-0.54.hdf5')
 
