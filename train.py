@@ -49,8 +49,8 @@ if __name__ == '__main__':
 
     # model = load_model(os.getcwd()+'/saved_models/ResNet_checkpoint_050718_14-1.47-0.54.hdf5')
 
-    opt = Adam(lr=2e-5)
-    model.compile(optimizer=opt, loss=categorical_crossentropy, metrics=['acc'])
+    # opt = Adam(lr=2e-5)
+    model.compile(optimizer='adam', loss=categorical_crossentropy, metrics=['acc'])
 
     checkpoint = ModelCheckpoint(
         filepath=os.path.join(
@@ -62,16 +62,16 @@ if __name__ == '__main__':
 
     training = model.fit_generator(
         train_generator,
-        steps_per_epoch=50,
+        steps_per_epoch=1000,
         epochs=EPOCH,
         validation_data=validation_generator,
-        validation_steps=10,
+        validation_steps=150,
         callbacks=[checkpoint],
     )
 
     score = model.evaluate_generator(
         validation_generator,
-        steps=10
+        steps=150
     )
 
     print('\nLoss \t\t:',score[0])
