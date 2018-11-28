@@ -1,5 +1,7 @@
 import pandas
 import keras
+
+# import keras
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.preprocessing.image import ImageDataGenerator
 from keras.applications import inception_v3
