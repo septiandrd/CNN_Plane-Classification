@@ -29,7 +29,6 @@ if __name__ == '__main__':
         target_size=(200, 300),
         batch_size=25,
         class_mode='categorical',
-        save_to_dir='Dataset/TrainingAugmented'
     )
 
     validation_generator = validation_datagen.flow_from_directory(
