@@ -39,9 +39,9 @@ if __name__ == '__main__':
     )
 
     save_dir = os.path.join(os.getcwd(), 'saved_models')
-    model_name = 'Model_' + datetime.now().strftime('%d%m%y') + '.hdf5'
-    weight_name = 'Weight_' + datetime.now().strftime('%d%m%y') + '.hdf5'
-    history_name = 'History_' + datetime.now().strftime('%d%m%y')
+    model_name = 'Model_InceptionV3_' + datetime.now().strftime('%d%m%y') + '.hdf5'
+    weight_name = 'Weight_InceptionV3_' + datetime.now().strftime('%d%m%y') + '.hdf5'
+    history_name = 'History_InceptionV3_' + datetime.now().strftime('%d%m%y')
     model_path = os.path.join(save_dir, model_name)
     weight_path = os.path.join(save_dir, weight_name)
     EPOCH = 100
