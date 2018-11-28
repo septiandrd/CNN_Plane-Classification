@@ -16,23 +16,26 @@ if __name__ == '__main__':
 
     train_datagen = ImageDataGenerator(
         horizontal_flip=True,
-        vertical_flip=True,
-        rotation_range=45,
+        rotation_range=20,
+        zca_whitening=True,
+        brightness_range=(0.0,1.0),
+        channel_shift_range=5.0,
     )
 
     validation_datagen = ImageDataGenerator()
 
     train_generator = train_datagen.flow_from_directory(
         'Dataset/Training',
-        target_size=(500, 320),
-        batch_size=10,
+        target_size=(200, 300),
+        batch_size=25,
         class_mode='categorical',
+        save_to_dir='Dataset/TrainingAugmented'
     )
 
     validation_generator = validation_datagen.flow_from_directory(
         'Dataset/Validation',
-        target_size=(500, 320),
-        batch_size=10,
+        target_size=(200, 300),
+        batch_size=25,
         class_mode='categorical',
     )
 
@@ -42,10 +45,10 @@ if __name__ == '__main__':
     history_name = 'History_' + datetime.now().strftime('%d%m%y')
     model_path = os.path.join(save_dir, model_name)
     weight_path = os.path.join(save_dir, weight_name)
-    EPOCH = 20
+    EPOCH = 100
 
     model = inception_resnet_v2.InceptionResNetV2(include_top=True, weights=None, classes=70,
-                     pooling='avg', input_shape=(500, 320, 3))
+                     pooling='avg', input_shape=(300, 200, 3))
 
     # model = load_model(os.getcwd()+'/saved_models/ResNet_checkpoint_050718_14-1.47-0.54.hdf5')
 
@@ -65,19 +68,17 @@ if __name__ == '__main__':
         steps_per_epoch=1000,
         epochs=EPOCH,
         validation_data=validation_generator,
-        validation_steps=150,
         callbacks=[checkpoint],
     )
 
     score = model.evaluate_generator(
         validation_generator,
-        steps=150
     )
 
     print('\nLoss \t\t:',score[0])
     print('Accuracy \t:',score[1]*100,'%')
 
-    with open(os.path.join(save_dir,'saved_models',history_name), 'wb') as file:
+    with open(os.path.join(save_dir,history_name), 'wb') as file:
         pickle.dump(training.history, file)
 
     end = time.time()
