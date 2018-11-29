@@ -1,6 +1,6 @@
 import pandas
 import keras
-from keras.callbacks import ModelCheckpoint
+from keras.callbacks import ModelCheckpoint, TensorBoard, EarlyStopping
 from keras.preprocessing.image import ImageDataGenerator
 from keras.applications import inception_v3
 from keras.optimizers import Adam
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     history_name = 'History_InceptionV3_' + datetime.now().strftime('%d%m%y')
     model_path = os.path.join(save_dir, model_name)
     weight_path = os.path.join(save_dir, weight_name)
-    EPOCH = 100
+    EPOCH = 20
 
     model = inception_v3.InceptionV3(include_top=True, weights=None, classes=70,
                      pooling='avg', input_shape=(200, 300, 3))
@@ -54,6 +54,8 @@ if __name__ == '__main__':
     # opt = Adam(lr=2e-5)
     model.compile(optimizer='adam', loss=categorical_crossentropy, metrics=['acc'])
 
+    tensorboard = TensorBoard()
+    earlystop = EarlyStopping(patience=4)
     checkpoint = ModelCheckpoint(
         filepath=os.path.join(
             save_dir, 'Checkpoint_' +
@@ -67,7 +69,7 @@ if __name__ == '__main__':
         steps_per_epoch=1000,
         epochs=EPOCH,
         validation_data=validation_generator,
-        callbacks=[checkpoint],
+        callbacks=[checkpoint,tensorboard,earlystop],
     )
 
     score = model.evaluate_generator(
