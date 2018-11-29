@@ -1,8 +1,9 @@
 import pandas
 import keras
-from keras.callbacks import ModelCheckpoint, TensorBoard, EarlyStopping
+from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.preprocessing.image import ImageDataGenerator
-from keras.applications import inception_resnet_v2
+from tensorflow.keras.callbacks import TensorBoard
+from keras.applications import xception
 from keras.optimizers import Adam
 from keras.losses import categorical_crossentropy
 from datetime import datetime
@@ -29,35 +30,30 @@ if __name__ == '__main__':
 
     train_generator = train_datagen.flow_from_directory(
         'Dataset/Training',
-        target_size=(200, 300),
+        target_size=(140, 200),
         batch_size=25,
         class_mode='categorical',
     )
 
     validation_generator = validation_datagen.flow_from_directory(
         'Dataset/Validation',
-        target_size=(200, 300),
+        target_size=(140, 200),
         batch_size=25,
         class_mode='categorical',
     )
 
     save_dir = os.path.join(os.getcwd(), 'saved_models')
-    arch_name = 'InceptionResNetV2'
-    model_name = 'Model_InceptionResNetV2_' + datetime.now().strftime('%d%m%y') + '.hdf5'
-    weight_name = 'Weight_InceptionResNetV2_' + datetime.now().strftime('%d%m%y') + '.hdf5'
-    history_name = 'History_InceptionResNetV2_' + datetime.now().strftime('%d%m%y')
+    arch_name = "Xception"
+    model_name = 'Model_Xception_' + datetime.now().strftime('%d%m%y') + '.hdf5'
+    weight_name = 'Weight_Xception_' + datetime.now().strftime('%d%m%y') + '.hdf5'
+    history_name = 'History_Xception_' + datetime.now().strftime('%d%m%y')
     model_path = os.path.join(save_dir, model_name)
     weight_path = os.path.join(save_dir, weight_name)
     EPOCH = 20
 
-    model = inception_resnet_v2.InceptionResNetV2(include_top=True, weights=None, classes=70,
-                     pooling='avg', input_shape=(200, 300, 3))
-
-    # model = load_model(os.getcwd()+'/saved_models/ResNet_checkpoint_050718_14-1.47-0.54.hdf5')
-
-    # opt = Adam(lr=2e-5)
+    model = xception.Xception(include_top=True, weights=None, classes=70, input_shape=(140, 200, 3))
     model.compile(optimizer='adam', loss=categorical_crossentropy, metrics=['acc'])
-    model.summary()
+    # model.summary()
 
     tensorboard = TensorBoard()
     earlystop = EarlyStopping(patience=4)
@@ -68,7 +64,6 @@ if __name__ == '__main__':
             '_{epoch:02d}-{val_loss:.2f}-{val_acc:.2f}.hdf5'),
         save_best_only=True,
         verbose=1)
-
 
     training = model.fit_generator(
         train_generator,
@@ -93,7 +88,7 @@ if __name__ == '__main__':
     menit = (end-start)/60
 
     print("\n"+model_name+
-          "\n %i Epoch finished in %.2f minutes"%(EPOCH,menit))
-    
+          "\n Finished in %.2f minutes"%(menit))
+
     bot.send_message(chat_id='477030905', text="Training "+arch_name+" finished. "
                         "\nLoss : "+str(score[0])+" Accuracy : "+str(score[1]*100)+"%")
