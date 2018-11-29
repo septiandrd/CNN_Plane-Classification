@@ -10,6 +10,9 @@ import time
 import pickle
 import os
 
+import telegram
+bot = telegram.Bot(token="631334683:AAEKuP9g-WcJ_jJgIvFfaQ99uHs5C5S73nU")
+
 if __name__ == '__main__':
 
     start = time.time()
@@ -39,6 +42,7 @@ if __name__ == '__main__':
     )
 
     save_dir = os.path.join(os.getcwd(), 'saved_models')
+    arch_name = "InceptionV3"
     model_name = 'Model_InceptionV3_' + datetime.now().strftime('%d%m%y') + '.hdf5'
     weight_name = 'Weight_InceptionV3_' + datetime.now().strftime('%d%m%y') + '.hdf5'
     history_name = 'History_InceptionV3_' + datetime.now().strftime('%d%m%y')
@@ -88,3 +92,6 @@ if __name__ == '__main__':
 
     print("\n"+model_name+
           "\n %i Epoch finished in %.2f minutes"%(EPOCH,menit))
+
+    bot.send_message(chat_id='477030905', text="Training "+arch_name+" finished. "
+                        "\nLoss : "+str(score[0])+" Accuracy : "+str(score[1]*100)+"%")

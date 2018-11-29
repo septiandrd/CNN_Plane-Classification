@@ -10,6 +10,9 @@ import time
 import pickle
 import os
 
+import telegram
+bot = telegram.Bot(token="631334683:AAEKuP9g-WcJ_jJgIvFfaQ99uHs5C5S73nU")
+
 if __name__ == '__main__':
 
     start = time.time()
@@ -39,9 +42,10 @@ if __name__ == '__main__':
     )
 
     save_dir = os.path.join(os.getcwd(), 'saved_models')
-    model_name = 'Model_' + datetime.now().strftime('%d%m%y') + '.hdf5'
-    weight_name = 'Weight_' + datetime.now().strftime('%d%m%y') + '.hdf5'
-    history_name = 'History_' + datetime.now().strftime('%d%m%y')
+    arch_name = 'InceptionResNetV2'
+    model_name = 'Model_InceptionResNetV2_' + datetime.now().strftime('%d%m%y') + '.hdf5'
+    weight_name = 'Weight_InceptionResNetV2_' + datetime.now().strftime('%d%m%y') + '.hdf5'
+    history_name = 'History_InceptionResNetV2_' + datetime.now().strftime('%d%m%y')
     model_path = os.path.join(save_dir, model_name)
     weight_path = os.path.join(save_dir, weight_name)
     EPOCH = 20
@@ -73,9 +77,6 @@ if __name__ == '__main__':
         callbacks=[checkpoint,tensorboard,earlystop],
     )
 
-    
-
-
     score = model.evaluate_generator(
         validation_generator,
     )
@@ -92,3 +93,6 @@ if __name__ == '__main__':
 
     print("\n"+model_name+
           "\n %i Epoch finished in %.2f minutes"%(EPOCH,menit))
+    
+    bot.send_message(chat_id='477030905', text="Training "+arch_name+" finished. "
+                        "\nLoss : "+str(score[0])+" Accuracy : "+str(score[1]*100)+"%")
