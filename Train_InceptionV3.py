@@ -1,7 +1,8 @@
 import pandas
 import keras
-from keras.callbacks import ModelCheckpoint, TensorBoard, EarlyStopping
+from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.callbacks import TensorBoard
 from keras.applications import inception_v3
 from keras.optimizers import Adam
 from keras.losses import categorical_crossentropy
