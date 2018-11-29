@@ -57,42 +57,43 @@ if __name__ == '__main__':
 
     # opt = Adam(lr=2e-5)
     model.compile(optimizer='adam', loss=categorical_crossentropy, metrics=['acc'])
+    model.summary()
 
-    tensorboard = TensorBoard()
-    earlystop = EarlyStopping(patience=4)
-    checkpoint = ModelCheckpoint(
-        filepath=os.path.join(
-            save_dir, 'Checkpoint_' +
-            datetime.now().strftime('%d%m%y') +
-            '_{epoch:02d}-{val_loss:.2f}-{val_acc:.2f}.hdf5'),
-        save_best_only=True,
-        verbose=1)
+    # tensorboard = TensorBoard()
+    # earlystop = EarlyStopping(patience=4)
+    # checkpoint = ModelCheckpoint(
+    #     filepath=os.path.join(
+    #         save_dir, 'Checkpoint_' +
+    #         datetime.now().strftime('%d%m%y') +
+    #         '_{epoch:02d}-{val_loss:.2f}-{val_acc:.2f}.hdf5'),
+    #     save_best_only=True,
+    #     verbose=1)
 
 
-    training = model.fit_generator(
-        train_generator,
-        steps_per_epoch=1000,
-        epochs=EPOCH,
-        validation_data=validation_generator,
-        callbacks=[checkpoint,tensorboard,earlystop],
-    )
+    # training = model.fit_generator(
+    #     train_generator,
+    #     steps_per_epoch=1000,
+    #     epochs=EPOCH,
+    #     validation_data=validation_generator,
+    #     callbacks=[checkpoint,tensorboard,earlystop],
+    # )
 
-    score = model.evaluate_generator(
-        validation_generator,
-    )
+    # score = model.evaluate_generator(
+    #     validation_generator,
+    # )
 
-    print('\nLoss \t\t:',score[0])
-    print('Accuracy \t:',score[1]*100,'%')
+    # print('\nLoss \t\t:',score[0])
+    # print('Accuracy \t:',score[1]*100,'%')
 
-    with open(os.path.join(save_dir,history_name), 'wb') as file:
-        pickle.dump(training.history, file)
+    # with open(os.path.join(save_dir,history_name), 'wb') as file:
+    #     pickle.dump(training.history, file)
 
-    end = time.time()
+    # end = time.time()
 
-    menit = (end-start)/60
+    # menit = (end-start)/60
 
-    print("\n"+model_name+
-          "\n %i Epoch finished in %.2f minutes"%(EPOCH,menit))
+    # print("\n"+model_name+
+    #       "\n %i Epoch finished in %.2f minutes"%(EPOCH,menit))
     
-    bot.send_message(chat_id='477030905', text="Training "+arch_name+" finished. "
-                        "\nLoss : "+str(score[0])+" Accuracy : "+str(score[1]*100)+"%")
+    # bot.send_message(chat_id='477030905', text="Training "+arch_name+" finished. "
+    #                     "\nLoss : "+str(score[0])+" Accuracy : "+str(score[1]*100)+"%")
