@@ -125,7 +125,7 @@ if __name__ == '__main__':
 
       score = model.evaluate_generator(
           validation_generator,
-          validation_steps=55
+          steps=55
       )
 
     print('\nLoss \t\t:',score[0])
