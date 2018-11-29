@@ -119,11 +119,13 @@ if __name__ == '__main__':
           steps_per_epoch=1000,
           epochs=EPOCH,
           validation_data=validation_generator,
+          validation_steps=55,
           callbacks=[checkpoint,tensorboard,earlystop],
       )
 
       score = model.evaluate_generator(
           validation_generator,
+          validation_steps=55
       )
 
     print('\nLoss \t\t:',score[0])
