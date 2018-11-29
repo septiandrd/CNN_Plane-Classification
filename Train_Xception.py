@@ -59,7 +59,7 @@ if __name__ == '__main__':
     earlystop = EarlyStopping(patience=4)
     checkpoint = ModelCheckpoint(
         filepath=os.path.join(
-            save_dir, 'Checkpoint_' +
+            save_dir, 'Checkpoint_Xception_' +
             datetime.now().strftime('%d%m%y') +
             '_{epoch:02d}-{val_loss:.2f}-{val_acc:.2f}.hdf5'),
         save_best_only=True,
