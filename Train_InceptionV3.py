@@ -53,7 +53,7 @@ if __name__ == '__main__':
     model = inception_v3.InceptionV3(include_top=True, weights=None, classes=70, input_shape=(140, 200, 3))
     # model = load_model(os.getcwd()+'/saved_models/ResNet_checkpoint_050718_14-1.47-0.54.hdf5')
     
-    model.compile(optimizer=Adam(), loss=categorical_crossentropy, metrics=['acc'])
+    model.compile(optimizer='adam', loss=categorical_crossentropy, metrics=['acc'])
     model.summary()
 
     tensorboard = TensorBoard()
