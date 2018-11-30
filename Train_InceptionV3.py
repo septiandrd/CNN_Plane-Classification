@@ -21,7 +21,6 @@ if __name__ == '__main__':
     train_datagen = ImageDataGenerator(
         horizontal_flip=True,
         rotation_range=20,
-        zca_whitening=True,
         brightness_range=(0.0,1.0),
         channel_shift_range=5.0,
     )
@@ -30,14 +29,14 @@ if __name__ == '__main__':
 
     train_generator = train_datagen.flow_from_directory(
         'Dataset/Training',
-        target_size=(200, 300),
+        target_size=(140, 200),
         batch_size=25,
         class_mode='categorical',
     )
 
     validation_generator = validation_datagen.flow_from_directory(
         'Dataset/Validation',
-        target_size=(200, 300),
+        target_size=(140, 200),
         batch_size=25,
         class_mode='categorical',
     )
@@ -51,20 +50,17 @@ if __name__ == '__main__':
     weight_path = os.path.join(save_dir, weight_name)
     EPOCH = 20
 
-    model = inception_v3.InceptionV3(include_top=True, weights=None, classes=70,
-                     pooling='avg', input_shape=(200, 300, 3))
-
+    model = inception_v3.InceptionV3(include_top=True, weights=None, classes=70, input_shape=(140, 200, 3))
     # model = load_model(os.getcwd()+'/saved_models/ResNet_checkpoint_050718_14-1.47-0.54.hdf5')
-
-    # opt = Adam(lr=2e-5)
-    model.compile(optimizer='adam', loss=categorical_crossentropy, metrics=['acc'])
+    
+    model.compile(optimizer=Adam(), loss=categorical_crossentropy, metrics=['acc'])
     model.summary()
 
     tensorboard = TensorBoard()
-    earlystop = EarlyStopping(patience=4,monitor='val_acc')
+    earlystop = EarlyStopping(patience=5)
     checkpoint = ModelCheckpoint(
         filepath=os.path.join(
-            save_dir, 'Checkpoint_' +
+            save_dir, 'Checkpoint_InceptionV3_' +
             datetime.now().strftime('%d%m%y') +
             '_{epoch:02d}-{val_loss:.2f}-{val_acc:.2f}.hdf5'),
         save_best_only=True,
@@ -72,7 +68,7 @@ if __name__ == '__main__':
 
     training = model.fit_generator(
         train_generator,
-        steps_per_epoch=1000,
+        steps_per_epoch=800,
         epochs=EPOCH,
         validation_data=validation_generator,
         callbacks=[checkpoint,tensorboard,earlystop],
@@ -93,7 +89,7 @@ if __name__ == '__main__':
     menit = (end-start)/60
 
     print("\n"+model_name+
-          "\n %i Epoch finished in %.2f minutes"%(EPOCH,menit))
+          "\n Finished in %.2f minutes"%(menit))
 
     bot.send_message(chat_id='477030905', text="Training "+arch_name+" finished. "
                         "\nLoss : "+str(score[0])+" Accuracy : "+str(score[1]*100)+"%")
