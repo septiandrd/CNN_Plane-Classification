@@ -21,25 +21,25 @@ if __name__ == '__main__':
     train_datagen = ImageDataGenerator(
         horizontal_flip=True,
         rotation_range=20,
-        zca_whitening=True,
-        brightness_range=(0.0,1.0),
-        channel_shift_range=5.0,
+        brightness_range=(0.0,1.0)
     )
 
     validation_datagen = ImageDataGenerator()
 
     train_generator = train_datagen.flow_from_directory(
         'Dataset/Training',
-        target_size=(140, 200),
+        target_size=(200, 300),
         batch_size=25,
         class_mode='categorical',
+        color_mode='grayscale'
     )
 
     validation_generator = validation_datagen.flow_from_directory(
         'Dataset/Validation',
-        target_size=(140, 200),
+        target_size=(200, 300),
         batch_size=25,
         class_mode='categorical',
+        color_mode='grayscale'
     )
 
     save_dir = os.path.join(os.getcwd(), 'saved_models')
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     weight_path = os.path.join(save_dir, weight_name)
     EPOCH = 20
 
-    model = xception.Xception(include_top=True, weights=None, classes=70, input_shape=(140, 200, 3))
+    model = xception.Xception(include_top=True, weights=None, classes=70, input_shape=(200, 300, 1))
     model.compile(optimizer='adam', loss=categorical_crossentropy, metrics=['acc'])
     # model.summary()
 
@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     training = model.fit_generator(
         train_generator,
-        steps_per_epoch=1000,
+        steps_per_epoch=800,
         epochs=EPOCH,
         validation_data=validation_generator,
         callbacks=[checkpoint,tensorboard,earlystop],
