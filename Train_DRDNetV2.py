@@ -112,7 +112,7 @@ if __name__ == '__main__':
     EPOCH = 20
 
     model = DRDNetV2(input_shape=(200,300,1), num_class=70)
-    model.compile(optimizer=Adam(), loss=categorical_crossentropy, metrics=['acc'])
+    model.compile(optimizer=Adam(lr=0.0005, decay=0.1), loss=categorical_crossentropy, metrics=['acc'])
     model.summary()
 
     tensorboard = TensorBoard()
