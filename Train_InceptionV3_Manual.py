@@ -17,7 +17,7 @@ import telegram
 bot = telegram.Bot(token="631334683:AAEKuP9g-WcJ_jJgIvFfaQ99uHs5C5S73nU")
 
 def ReductionModule(inputs) :
-  t1 = MaxPooling2D(strides=(2,2))(inputs)
+  t1 = MaxPooling2D(strides=(2,2),padding='same')(inputs)
 
   t2 = Conv2D(filters=64, kernel_size=(1,1), strides=(1,1), padding='same')(inputs)
   t2 = BatchNormalization(axis=3)(t2)
