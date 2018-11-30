@@ -14,6 +14,9 @@ import os
 import telegram
 bot = telegram.Bot(token="631334683:AAEKuP9g-WcJ_jJgIvFfaQ99uHs5C5S73nU")
 
+def Xception(input_shape,num_class) :
+    
+
 if __name__ == '__main__':
 
     start = time.time()
