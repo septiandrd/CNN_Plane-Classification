@@ -89,7 +89,7 @@ if __name__ == '__main__':
     train_generator = train_datagen.flow_from_directory(
         'Dataset/Training',
         target_size=(200, 300),
-        batch_size=25,
+        batch_size=20,
         class_mode='categorical',
         color_mode='grayscale'
     )
@@ -97,7 +97,7 @@ if __name__ == '__main__':
     validation_generator = validation_datagen.flow_from_directory(
         'Dataset/Validation',
         target_size=(200, 300),
-        batch_size=25,
+        batch_size=20,
         class_mode='categorical',
         color_mode='grayscale'
     )
