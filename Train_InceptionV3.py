@@ -61,7 +61,7 @@ if __name__ == '__main__':
     model.summary()
 
     tensorboard = TensorBoard()
-    earlystop = EarlyStopping(patience=4)
+    earlystop = EarlyStopping(patience=4,monitor='val_acc')
     checkpoint = ModelCheckpoint(
         filepath=os.path.join(
             save_dir, 'Checkpoint_' +

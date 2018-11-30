@@ -77,14 +77,14 @@ if __name__ == '__main__':
 
     train_generator = train_datagen.flow_from_directory(
         'Dataset/Training',
-        target_size=(200, 300),
+        target_size=(140, 200),
         batch_size=25,
         class_mode='categorical',
     )
 
     validation_generator = validation_datagen.flow_from_directory(
         'Dataset/Validation',
-        target_size=(200, 300),
+        target_size=(140, 200),
         batch_size=25,
         class_mode='categorical',
     )
@@ -98,12 +98,12 @@ if __name__ == '__main__':
     weight_path = os.path.join(save_dir, weight_name)
     EPOCH = 20
 
-    model = DRDNetV1(input_shape=(200,300,3), num_class=70)
+    model = DRDNetV1(input_shape=(140,200,3), num_class=70)
     model.compile(optimizer=Adam(), loss=categorical_crossentropy, metrics=['acc'])
     model.summary()
 
     tensorboard = TensorBoard()
-    earlystop = EarlyStopping(patience=4)
+    earlystop = EarlyStopping(patience=4,monitor='val_acc')
     checkpoint = ModelCheckpoint(
         filepath=os.path.join(
             save_dir, 'Checkpoint_DRDNetV1_' +
